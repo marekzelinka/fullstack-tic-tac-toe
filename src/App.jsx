@@ -3,17 +3,9 @@ import { useState } from "react";
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+
   const isXNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
-
-  const winner = calculateWinner(currentSquares);
-  const isDraw = !winner && currentSquares.every(Boolean);
-  const isGameOver = winner || isDraw;
-  const status = winner
-    ? `Winner: {winner}`
-    : isDraw
-      ? "Draw"
-      : `Next player: ${isXNext ? "X" : "O"}`;
 
   const handlePlay = (nextSquares) => {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -23,29 +15,37 @@ export default function Game() {
 
   return (
     <div className="game">
-      <div className="status">{status}</div>
-      <Board
+      <GameStatus isXNext={isXNext} squares={currentSquares} />
+      <GameBoard
         isXNext={isXNext}
         squares={currentSquares}
-        isGameOver={isGameOver}
         onPlay={handlePlay}
       />
-      <div className="game-info">
-        <ol>
-          {history.map((_squares, move) => (
-            <li key={move}>
-              <button onClick={() => setCurrentMove(move)}>
-                {move > 0 ? `Go to move #${move}` : "Go to game start"}
-              </button>
-            </li>
-          ))}
-        </ol>
-      </div>
+      <GameHistory history={history} onMove={setCurrentMove} />
     </div>
   );
 }
 
-function Board({ isXNext, squares, isGameOver, onPlay }) {
+function GameStatus({ isXNext, squares }) {
+  const winner = calculateWinner(squares);
+  const isDraw = !winner && squares.every(Boolean);
+
+  return (
+    <div className="status">
+      {winner
+        ? `Winner: ${winner}`
+        : isDraw
+          ? "Draw"
+          : `Next player: ${isXNext ? "X" : "O"}`}
+    </div>
+  );
+}
+
+function GameBoard({ isXNext, squares, onPlay }) {
+  const winner = calculateWinner(squares);
+  const isDraw = !winner && squares.every(Boolean);
+  const isGameOver = winner || isDraw;
+
   const handleSquareClick = (i) => {
     if (squares[i] || isGameOver) {
       return;
@@ -59,7 +59,7 @@ function Board({ isXNext, squares, isGameOver, onPlay }) {
   return (
     <div className="game-board">
       {squares.map((square, i) => (
-        <Square value={square} onClick={() => handleSquareClick(i)} />
+        <Square key={i} value={square} onClick={() => handleSquareClick(i)} />
       ))}
     </div>
   );
@@ -73,20 +73,39 @@ function Square({ value, onClick }) {
   );
 }
 
+function GameHistory({ history, onMove }) {
+  return (
+    <ol className="game-history">
+      {history.map((_squares, move) => (
+        <li key={move}>
+          <button onClick={() => onMove(move)}>
+            {move > 0 ? `Go to move #${move}` : "Go to game start"}
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function calculateWinner(squares) {
   const lines = [
+    // Winning row lines
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
+    // Winning column lines
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
+    // Winning diagonal lines
     [0, 4, 8],
     [2, 4, 6],
   ];
+
   for (const [a, b, c] of lines) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
       return squares[a];
   }
+
   return null;
 }
