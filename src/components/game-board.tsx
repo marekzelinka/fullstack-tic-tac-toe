@@ -1,7 +1,20 @@
-import { Square } from "./square";
+import type { Player, Winner } from "../types.ts";
+import { Square } from "./square.tsx";
 
-export function GameBoard({ isXNext, squares, winner, isGameOver, onPlay }) {
-  const handleSquareClick = (i) => {
+export function GameBoard({
+  isXNext,
+  squares,
+  winner,
+  isGameOver,
+  onPlay,
+}: {
+  isXNext: boolean;
+  squares: Player[];
+  winner: Winner;
+  isGameOver: boolean;
+  onPlay: (nextSquares: Player[]) => void;
+}) {
+  const handleSquareClick = (i: number) => {
     if (squares[i] || isGameOver) {
       return;
     }

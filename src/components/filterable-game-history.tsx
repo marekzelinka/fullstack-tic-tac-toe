@@ -1,6 +1,15 @@
 import { useState } from "react";
+import type { Player } from "../types.ts";
 
-export function FilterableGameHistory({ history, currentMove, onMove }) {
+export function FilterableGameHistory({
+  history,
+  currentMove,
+  onMove,
+}: {
+  history: Player[][];
+  currentMove: number;
+  onMove: (nextMove: number) => void;
+}) {
   const [isAscending, setIsAscending] = useState(false);
 
   return (
@@ -19,7 +28,13 @@ export function FilterableGameHistory({ history, currentMove, onMove }) {
   );
 }
 
-function FilterBar({ isAscending, onIsAscendingClick }) {
+function FilterBar({
+  isAscending,
+  onIsAscendingClick,
+}: {
+  isAscending: boolean;
+  onIsAscendingClick: () => void;
+}) {
   return (
     <div className="filter-bar">
       <button onClick={onIsAscendingClick}>
@@ -29,7 +44,17 @@ function FilterBar({ isAscending, onIsAscendingClick }) {
   );
 }
 
-function GameHistory({ history, isAscending, currentMove, onMove }) {
+function GameHistory({
+  history,
+  isAscending,
+  currentMove,
+  onMove,
+}: {
+  history: Player[][];
+  isAscending: boolean;
+  currentMove: number;
+  onMove: (nextMove: number) => void;
+}) {
   const moves = history.map((_squares, move) => (
     <li key={move}>
       {move === currentMove ? (

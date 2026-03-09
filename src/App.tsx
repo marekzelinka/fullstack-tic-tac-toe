@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { GameBoard } from "./components/game-board";
-import { FilterableGameHistory } from "./components/filterable-game-history";
-import { calculateWinner } from "./utils";
-import { GameStatus } from "./components/game-status";
-import { ResetGameButton } from "./components/reset-game-button";
+import { GameBoard } from "./components/game-board.tsx";
+import { FilterableGameHistory } from "./components/filterable-game-history.tsx";
+import { calculateWinner } from "./utils.ts";
+import { GameStatus } from "./components/game-status.tsx";
+import { ResetGameButton } from "./components/reset-game-button.tsx";
+import type { Player } from "./types.ts";
 
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState<Player[][]>([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
 
   const isXNext = currentMove % 2 === 0;
@@ -14,9 +15,9 @@ export default function Game() {
 
   const winner = calculateWinner(currentSquares);
   const isDraw = !winner && currentSquares.every(Boolean);
-  const isGameOver = winner || isDraw;
+  const isGameOver = Boolean(winner || isDraw);
 
-  const handlePlay = (nextSquares) => {
+  const handlePlay = (nextSquares: Player[]) => {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);

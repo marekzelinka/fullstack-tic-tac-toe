@@ -1,4 +1,14 @@
-export function GameStatus({ isXNext, winner, isDraw }) {
+import type { Winner } from "../types.ts";
+
+export function GameStatus({
+  isXNext,
+  winner,
+  isDraw,
+}: {
+  isXNext: boolean;
+  winner: Winner;
+  isDraw: boolean;
+}) {
   return (
     <div className="game-status">
       {winner

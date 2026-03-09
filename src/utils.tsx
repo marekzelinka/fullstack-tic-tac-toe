@@ -1,4 +1,6 @@
-export function calculateWinner(squares) {
+import type { Player, Winner } from "./types.ts";
+
+export function calculateWinner(squares: Player[]): Winner {
   const lines = [
     // Rows
     [0, 1, 2],
