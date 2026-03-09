@@ -1,104 +1,78 @@
-* {
-    box-sizing: border-box;
+:root {
+    /* Colors */
+    --border-color: #dddddd;
+
+    /* Highlight Colors */
+    --highlight-bg: #e6fffa;
+    --highlight-border: #38b2ac;
+    --highlight-text: #2c7a7b;
+
+    /* Dimensions */
+    --square-bg: #ffffff;
+    --square-size: 40px;
+    --board-width: calc(var(--square-size) * 3);
+    --history-width: 200px;
+    --gap: 20px;
 }
 
 body {
-    font-family: sans-serif;
-    margin: 20px;
-    padding: 0;
-}
-
-h1 {
-    margin-top: 0;
-    font-size: 22px;
-}
-
-h2 {
-    margin-top: 0;
-    font-size: 20px;
-}
-
-h3 {
-    margin-top: 0;
-    font-size: 18px;
-}
-
-h4 {
-    margin-top: 0;
-    font-size: 16px;
-}
-
-h5 {
-    margin-top: 0;
-    font-size: 14px;
-}
-
-h6 {
-    margin-top: 0;
-    font-size: 12px;
-}
-
-code {
-    font-size: 1.2em;
-}
-
-ul {
-    padding-inline-start: 20px;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: sans-serif;
-    margin: 20px;
-    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .game {
     display: grid;
-    grid-template-columns: auto 1fr; /* Board fits content, Info takes rest */
-    grid-template-rows: auto 1fr; /* Status fits content, Game area takes rest */
-    gap: 20px;
-    padding: 20px;
-    max-width: 24rem;
+    grid-template-columns: var(--board-width) var(--history-width);
+    grid-template-rows: auto 1fr;
+    column-gap: calc(var(--gap) + 10px);
+    row-gap: var(--gap);
 }
 
-.game-header {
-    grid-column: span 2;
-    display: flex;
-    justify-content: space-between;
+/* Row 1: Header */
+.game-status {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
 }
 
+.reset-button {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: end;
+}
+
+/* Row 2: Content */
 .game-board {
+    grid-row: 2;
+    grid-column: 1;
     display: grid;
-    grid-template-columns: repeat(3, 40px);
-    grid-template-rows: repeat(3, 40px);
+    grid-template-columns: repeat(3, var(--square-size));
+    grid-template-rows: repeat(3, var(--square-size));
 }
 
+.game-history {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+/* Square Specifics */
 .square {
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border: 1px solid #999;
-    font-size: 20px;
-    font-weight: bold;
+    width: var(--square-size);
+    height: var(--square-size);
+    background: var(--square-bg);
+    border: 1px solid var(--border-color);
+    margin: -1px 0 0 -1px; /* Collapse borders */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    cursor: pointer;
 }
+
 .square[data-highlight="true"] {
-    background-color: #ffc;
-    color: #f00;
-}
-
-.game-info {
-    padding-left: 10px;
-}
-
-.game-info ol {
-    margin: 0;
+    background-color: var(--highlight-bg);
+    border-color: var(--highlight-border);
+    color: var(--highlight-text);
+    z-index: 1; /* Ensure highlighted border sits on top */
 }

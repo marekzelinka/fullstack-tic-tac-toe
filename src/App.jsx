@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { GameHeader } from "./components/game-header";
 import { GameBoard } from "./components/game-board";
 import { FilterableGameHistory } from "./components/filterable-game-history";
 import { calculateWinner } from "./utils";
+import { GameStatus } from "./components/game-status";
+import { ResetGameButton } from "./components/reset-game-button";
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
@@ -28,13 +29,8 @@ export default function Game() {
 
   return (
     <div className="game">
-      <GameHeader
-        isXNext={isXNext}
-        winner={winner}
-        isDraw={isDraw}
-        isGameOver={isGameOver}
-        onReset={resetGame}
-      />
+      <GameStatus isXNext={isXNext} winner={winner} isDraw={isDraw} />
+      {isGameOver ? <ResetGameButton onReset={resetGame} /> : null}
       <GameBoard
         isXNext={isXNext}
         squares={currentSquares}

@@ -1,14 +1,14 @@
 export function calculateWinner(squares) {
   const lines = [
-    // Winning row lines
+    // Rows
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
-    // Winning column lines
+    // Cols
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    // Winning diagonal lines
+    // Diagonals
     [0, 4, 8],
     [2, 4, 6],
   ];
