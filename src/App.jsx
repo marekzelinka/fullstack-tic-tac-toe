@@ -1,8 +1,28 @@
 import { useState } from "react";
 
-export default function Board() {
+export default function Game() {
   const [xIsNext, setXISNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+
+  const handlePlay = (nextSquares) => {
+    setHistory([...history, nextSquares]);
+    setXISNext(!xIsNext);
+  };
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol></ol>
+      </div>
+    </div>
+  );
+}
+
+function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -22,8 +42,7 @@ export default function Board() {
     } else {
       nextSquares[square] = "O";
     }
-    setSquares(nextSquares);
-    setXISNext(!xIsNext);
+    onPlay(nextSquares);
   };
 
   return (
