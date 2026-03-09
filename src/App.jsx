@@ -21,7 +21,11 @@ export default function Game() {
         squares={currentSquares}
         onPlay={handlePlay}
       />
-      <GameHistory history={history} onMove={setCurrentMove} />
+      <GameHistory
+        history={history}
+        currentMove={currentMove}
+        onMove={setCurrentMove}
+      />
     </div>
   );
 }
@@ -73,14 +77,18 @@ function Square({ value, onClick }) {
   );
 }
 
-function GameHistory({ history, onMove }) {
+function GameHistory({ history, currentMove, onMove }) {
   return (
     <ol className="game-history">
       {history.map((_squares, move) => (
         <li key={move}>
-          <button onClick={() => onMove(move)}>
-            {move > 0 ? `Go to move #${move}` : "Go to game start"}
-          </button>
+          {move === currentMove ? (
+            `You are at move #${move}`
+          ) : (
+            <button onClick={() => onMove(move)}>
+              {move > 0 ? `Go to move #${move}` : "Go to game start"}
+            </button>
+          )}
         </li>
       ))}
     </ol>
