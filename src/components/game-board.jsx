@@ -19,7 +19,12 @@ export function GameBoard({ isXNext, squares, onPlay }) {
   return (
     <div className="game-board">
       {squares.map((square, i) => (
-        <Square key={i} value={square} onClick={() => handleSquareClick(i)} />
+        <Square
+          key={i}
+          value={square}
+          isHighlighted={winner?.line.includes(i) ?? false}
+          onClick={() => handleSquareClick(i)}
+        />
       ))}
     </div>
   );

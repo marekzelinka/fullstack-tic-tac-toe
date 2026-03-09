@@ -87,6 +87,10 @@ body {
     padding: 0;
     cursor: pointer;
 }
+.square[data-highlight="true"] {
+    background-color: #ffc;
+    color: #f00;
+}
 
 .game-info {
     padding-left: 10px;

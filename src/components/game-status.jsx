@@ -7,7 +7,7 @@ export function GameStatus({ isXNext, squares }) {
   return (
     <div className="status">
       {winner
-        ? `Winner: ${winner}`
+        ? `Winner: ${winner.player}`
         : isDraw
           ? "Draw"
           : `Next player: ${isXNext ? "X" : "O"}`}
