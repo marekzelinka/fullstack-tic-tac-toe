@@ -1,11 +1,6 @@
-import { calculateWinner } from "../utils";
-
-export function GameStatus({ isXNext, squares }) {
-  const winner = calculateWinner(squares);
-  const isDraw = !winner && squares.every(Boolean);
-
+export function GameStatus({ isXNext, winner, isDraw }) {
   return (
-    <div className="status">
+    <div className="game-status">
       {winner
         ? `Winner: ${winner.player}`
         : isDraw

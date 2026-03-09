@@ -1,11 +1,6 @@
-import { calculateWinner } from "../utils";
 import { Square } from "./square";
 
-export function GameBoard({ isXNext, squares, onPlay }) {
-  const winner = calculateWinner(squares);
-  const isDraw = !winner && squares.every(Boolean);
-  const isGameOver = winner || isDraw;
-
+export function GameBoard({ isXNext, squares, winner, isGameOver, onPlay }) {
   const handleSquareClick = (i) => {
     if (squares[i] || isGameOver) {
       return;
