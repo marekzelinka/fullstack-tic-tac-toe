@@ -62,9 +62,10 @@ body {
     grid-template-rows: auto 1fr; /* Status fits content, Game area takes rest */
     gap: 20px;
     padding: 20px;
+    max-width: 24rem;
 }
 
-.game-status {
+.game-header {
     grid-column: span 2;
     display: flex;
     justify-content: space-between;

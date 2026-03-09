@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GameStatus } from "./components/game-status";
+import { GameHeader } from "./components/game-header";
 import { GameBoard } from "./components/game-board";
 import { FilterableGameHistory } from "./components/filterable-game-history";
 import { calculateWinner } from "./utils";
@@ -21,9 +21,20 @@ export default function Game() {
     setCurrentMove(nextHistory.length - 1);
   };
 
+  const resetGame = () => {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
+  };
+
   return (
     <div className="game">
-      <GameStatus isXNext={isXNext} winner={winner} isDraw={isDraw} />
+      <GameHeader
+        isXNext={isXNext}
+        winner={winner}
+        isDraw={isDraw}
+        isGameOver={isGameOver}
+        onReset={resetGame}
+      />
       <GameBoard
         isXNext={isXNext}
         squares={currentSquares}

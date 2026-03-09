@@ -21,7 +21,7 @@ export function FilterableGameHistory({ history, currentMove, onMove }) {
 
 function FilterBar({ isAscending, onIsAscendingClick }) {
   return (
-    <div>
+    <div className="filter-bar">
       <button onClick={onIsAscendingClick}>
         Sort: {isAscending ? "Ascending" : "Descending"}
       </button>
@@ -42,5 +42,5 @@ function GameHistory({ history, isAscending, currentMove, onMove }) {
     </li>
   ));
 
-  return <ol>{isAscending ? moves.toReversed() : moves}</ol>;
+  return <ol className="moves">{isAscending ? moves.toReversed() : moves}</ol>;
 }
