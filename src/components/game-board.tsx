@@ -31,6 +31,7 @@ export function GameBoard({
           key={i}
           value={square}
           isHighlighted={winner?.line.includes(i) ?? false}
+          isXNext={isXNext}
           onClick={() => handleSquareClick(i)}
         />
       ))}

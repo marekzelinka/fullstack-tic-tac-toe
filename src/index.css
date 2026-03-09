@@ -42,6 +42,7 @@
 }
 
 .square {
+    position: relative;
     width: var(--square-size);
     height: var(--square-size);
     background: var(--square-bg);
@@ -51,12 +52,15 @@
     align-items: center;
     justify-content: center;
 }
-
 .square[data-highlight="true"] {
     background-color: var(--highlight-bg);
     border-color: var(--highlight-border);
     color: var(--highlight-text);
     z-index: 1; /* Ensure highlighted border sits on top */
+}
+.square:empty:hover::after {
+    content: attr(data-preview-next);
+    color: #ccc;
 }
 
 .game-history {
