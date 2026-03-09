@@ -58,7 +58,7 @@
     color: var(--highlight-text);
     z-index: 1; /* Ensure highlighted border sits on top */
 }
-.square:empty:hover::after {
+.square:not([aria-disabled]):empty:hover::after {
     content: attr(data-preview-next);
     color: #ccc;
 }

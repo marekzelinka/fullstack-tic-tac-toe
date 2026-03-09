@@ -26,12 +26,13 @@ export function GameBoard({
 
   return (
     <div className="game-board">
-      {squares.map((square, i) => (
+      {squares.map((value, i) => (
         <Square
           key={i}
-          value={square}
+          value={value}
           isHighlighted={winner?.line.includes(i) ?? false}
           isXNext={isXNext}
+          isGameOver={isGameOver}
           onClick={() => handleSquareClick(i)}
         />
       ))}
