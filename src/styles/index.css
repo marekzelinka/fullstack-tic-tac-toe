@@ -45,7 +45,7 @@
   position: relative;
   width: var(--square-size);
   height: var(--square-size);
-  background: var(--square-bg);
+  background-color: var(--square-bg);
   border: 1px solid var(--border-color);
   margin: -1px 0 0 -1px; /* Collapse borders */
   display: flex;

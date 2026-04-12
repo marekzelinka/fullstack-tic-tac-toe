@@ -11,7 +11,7 @@ export function FilterableGameHistory({
   currentMove: number;
   onMove: (nextMove: number) => void;
 }) {
-  const [isAscending, setIsAscending] = useState(false);
+  const [isAscending, setIsAscending] = useState(true);
 
   return (
     <div className="game-history">
@@ -38,7 +38,14 @@ function FilterBar({
 }) {
   return (
     <div className="filter-bar">
-      <button onClick={onIsAscendingClick}>Sort: {isAscending ? "Ascending" : "Descending"}</button>
+      <button
+        type="button"
+        onClick={onIsAscendingClick}
+        aria-pressed={!isAscending}
+        aria-label={isAscending ? "Sort moves descending" : "Sort moves ascending"}
+      >
+        Sort: {isAscending ? "Ascending" : "Descending"}
+      </button>
     </div>
   );
 }
@@ -66,5 +73,9 @@ function GameHistory({
     </li>
   ));
 
-  return <ol className="moves">{isAscending ? moves.toReversed() : moves}</ol>;
+  return (
+    <ol className="moves" aria-live="polite" aria-relevant="all">
+      {isAscending ? moves : moves.toReversed()}
+    </ol>
+  );
 }

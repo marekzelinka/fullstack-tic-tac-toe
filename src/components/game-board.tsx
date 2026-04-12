@@ -26,10 +26,10 @@ export function GameBoard({
 
   return (
     <div className="game-board">
-      {squares.map((value, i) => (
+      {squares.map((square, i) => (
         <Square
           key={i}
-          value={value}
+          player={square}
           isHighlighted={winner?.line.includes(i) ?? false}
           isXNext={isXNext}
           isGameOver={isGameOver}

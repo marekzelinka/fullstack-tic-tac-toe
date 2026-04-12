@@ -1,13 +1,13 @@
 import type { Player } from "../lib/types.ts";
 
 export function Square({
-  value,
+  player,
   isHighlighted,
   isXNext,
   isGameOver,
   onClick,
 }: {
-  value: Player;
+  player: Player;
   isHighlighted: boolean;
   isXNext: boolean;
   isGameOver: boolean;
@@ -15,13 +15,15 @@ export function Square({
 }) {
   return (
     <button
+      type="button"
       data-highlight={isHighlighted}
       data-preview-next={isXNext ? "X" : "O"}
       onClick={onClick}
       className="square"
-      aria-disabled={value || isGameOver ? "true" : undefined}
+      aria-label={player ? `Player ${player}` : "Empty"}
+      aria-disabled={player !== null || isGameOver ? true : undefined}
     >
-      {value}
+      {player}
     </button>
   );
 }
