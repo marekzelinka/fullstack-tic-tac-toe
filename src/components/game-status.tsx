@@ -1,4 +1,4 @@
-import type { Winner } from "../types.ts";
+import type { Winner } from "../lib/types.ts";
 
 export function GameStatus({
   isXNext,

@@ -1,4 +1,4 @@
-import type { Player } from "../types.ts";
+import type { Player } from "../lib/types.ts";
 
 export function Square({
   value,

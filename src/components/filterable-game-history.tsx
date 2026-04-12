@@ -1,5 +1,6 @@
 import { useState } from "react";
-import type { Player } from "../types.ts";
+
+import type { Player } from "../lib/types.ts";
 
 export function FilterableGameHistory({
   history,
@@ -37,9 +38,7 @@ function FilterBar({
 }) {
   return (
     <div className="filter-bar">
-      <button onClick={onIsAscendingClick}>
-        Sort: {isAscending ? "Ascending" : "Descending"}
-      </button>
+      <button onClick={onIsAscendingClick}>Sort: {isAscending ? "Ascending" : "Descending"}</button>
     </div>
   );
 }

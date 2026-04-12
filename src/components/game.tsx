@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { GameBoard } from "./components/game-board.tsx";
-import { FilterableGameHistory } from "./components/filterable-game-history.tsx";
-import { calculateWinner } from "./utils.ts";
-import { GameStatus } from "./components/game-status.tsx";
-import { ResetGameButton } from "./components/reset-game-button.tsx";
-import type { Player } from "./types.ts";
 
-export default function Game() {
+import type { Player } from "../lib/types.ts";
+import { calculateWinner } from "../lib/utils.ts";
+import { FilterableGameHistory } from "./filterable-game-history.tsx";
+import { GameBoard } from "./game-board.tsx";
+import { GameStatus } from "./game-status.tsx";
+import { ResetGameButton } from "./reset-game-button.tsx";
+
+export function Game() {
   const [history, setHistory] = useState<Player[][]>([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
 
@@ -39,11 +40,7 @@ export default function Game() {
         isGameOver={isGameOver}
         onPlay={handlePlay}
       />
-      <FilterableGameHistory
-        history={history}
-        currentMove={currentMove}
-        onMove={setCurrentMove}
-      />
+      <FilterableGameHistory history={history} currentMove={currentMove} onMove={setCurrentMove} />
     </div>
   );
 }

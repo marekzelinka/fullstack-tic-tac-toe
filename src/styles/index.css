@@ -1,0 +1,69 @@
+:root {
+  --border-color: #dddddd;
+  --gap: 20px;
+
+  /* Highlight Colors */
+  --highlight-bg: #e6fffa;
+  --highlight-border: #38b2ac;
+  --highlight-text: #2c7a7b;
+
+  /* Square */
+  --square-bg: #ffffff;
+  --square-size: 2.5rem;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: calc(var(--gap) + 10px);
+  row-gap: var(--gap);
+  max-width: 32rem;
+}
+
+.game-status {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: center;
+}
+
+.reset-button {
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: end;
+}
+
+.game-board {
+  grid-row: 2;
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size));
+  grid-template-rows: repeat(3, var(--square-size));
+}
+
+.square {
+  position: relative;
+  width: var(--square-size);
+  height: var(--square-size);
+  background: var(--square-bg);
+  border: 1px solid var(--border-color);
+  margin: -1px 0 0 -1px; /* Collapse borders */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.square[data-highlight="true"] {
+  background-color: var(--highlight-bg);
+  border-color: var(--highlight-border);
+  color: var(--highlight-text);
+  z-index: 1; /* Ensure highlighted border sits on top */
+}
+.square:not([aria-disabled]):empty:hover::after {
+  content: attr(data-preview-next);
+  color: #ccc;
+}
+
+.game-history {
+  grid-row: 2;
+  grid-column: 2;
+}

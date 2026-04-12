@@ -1,4 +1,4 @@
-import type { Player, Winner } from "../types.ts";
+import type { Player, Winner } from "../lib/types.ts";
 import { Square } from "./square.tsx";
 
 export function GameBoard({
