@@ -25,7 +25,7 @@ export function GameBoard({
   };
 
   return (
-    <div className="game-board">
+    <div role="region" className="game-board" aria-label="Tic Tac Toe Board">
       {squares.map((square, i) => (
         <Square
           key={i}
