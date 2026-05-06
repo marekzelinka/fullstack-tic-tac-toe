@@ -6,12 +6,12 @@ import { GameBoard } from "./game-board.tsx";
 
 test("does not call onPlay event handler when clicked square is filled", async () => {
   const onPlay = vi.fn();
-  const history: Player[][] = [Array(9).fill(null)];
-  const currentSquares = history[0];
+
   const screen = await render(
     <GameBoard
       isXNext={true}
-      squares={currentSquares}
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+      squares={["X"].concat(Array(8).fill(null)) as Player[]}
       winner={null}
       isGameOver={false}
       onPlay={onPlay}
@@ -30,7 +30,7 @@ test("does not call onPlay event handler when game is ower", async () => {
   const screen = await render(
     <GameBoard
       isXNext={false}
-      squares={["X", "O", null, null, "X", "O", null, null, "X"]}
+      squares={["X", "O", null, null, "X", "O", null, null, "X"]} // Winner: X
       winner={{ player: "X", line: [0, 4, 8] }}
       isGameOver={true}
       onPlay={onPlay}
