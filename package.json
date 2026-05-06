@@ -27,12 +27,14 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/browser-playwright": "^4.1.4",
+    "@vitest/coverage-v8": "4.1.4",
     "babel-plugin-react-compiler": "^1.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.60.0",
     "oxlint-tsgolint": "^0.20.0",
+    "playwright": "^1.59.1",
     "typescript": "~6.0.2",
     "vite": "^8.0.8",
     "vitest": "^4.1.4",
@@ -41,5 +43,6 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": "pnpm run lint",
     "*": "pnpm run fmt --no-error-on-unmatched-pattern"
-  }
+  },
+  "packageManager": "pnpm@11.0.6+sha512.97f906e1da2bedac3df83cadae04b4753a130092dd49d55cd36825ad3e623e9df3f97754f8f259e699172a360fac569acf2f908e7732bdae3eddb2dcf7e121fd"
 }
