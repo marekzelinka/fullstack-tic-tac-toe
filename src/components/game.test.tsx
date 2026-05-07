@@ -9,7 +9,6 @@ test("full game flow: X wins and resets", async () => {
 
   await expect.element(screen.getByText("Next player: X")).toBeVisible();
 
-  // Simplate a winning game for player X
   await squares.nth(0).click(); // X
   await squares.nth(1).click(); // O
   await squares.nth(4).click(); // X
@@ -17,6 +16,7 @@ test("full game flow: X wins and resets", async () => {
   await squares.nth(8).click(); // X (X wins diagonal)
 
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
+
   for (const index of [0, 4, 8]) {
     // oxlint-disable-next-line no-await-in-loop
     await expect.element(squares.nth(index)).toHaveAttribute("data-highlight", "true");
@@ -33,9 +33,9 @@ test("full game flow: X wins and resets", async () => {
 test("time travel: clicking history button updates the board", async () => {
   const screen = await render(<Game />);
   const squares = screen.getByRole("button", { name: /empty|player/i });
-
   await squares.nth(0).click(); // Move 1 (X)
   await squares.nth(1).click(); // Move 2 (O)
+
   // Go back to move #1
   await screen.getByRole("button", { name: /go to move #1/i }).click();
 
@@ -60,17 +60,23 @@ test("game ends in a draw", async () => {
   await expect.element(screen.getByText("Winner: X")).not.toBeInTheDocument();
 });
 
-test("history list can be sorted ascending and descending", async () => {
+test("history is by default in ascending order", async () => {
   const screen = await render(<Game />);
   const squares = screen.getByRole("button", { name: /empty|player/i });
-
   await squares.nth(0).click();
   await squares.nth(1).click();
-
   const items = screen.getByRole("list", { name: /history/i }).getByRole("listitem");
 
   await expect.element(items.first()).toHaveTextContent("Go to game start");
   await expect.element(items.last()).toHaveTextContent("You are at move #2");
+});
+
+test("history is correctly sorted when in deascending order", async () => {
+  const screen = await render(<Game />);
+  const squares = screen.getByRole("button", { name: /empty|player/i });
+  await squares.nth(0).click();
+  await squares.nth(1).click();
+  const items = screen.getByRole("list", { name: /history/i }).getByRole("listitem");
 
   await screen.getByRole("button", { name: /sort moves descending/i }).click();
 
@@ -96,11 +102,8 @@ test("square preview updates correctly after each turn", async () => {
 
   // Initially the first square should preview "X"
   await expect.element(squares.nth(0)).toHaveAttribute("data-preview-next", "X");
-
   await squares.nth(0).click();
-
   await expect.element(squares.nth(1)).toHaveAttribute("data-preview-next", "O");
-
   await squares.nth(1).click();
 
   // Simulate next turn, next square should preview "X"
@@ -111,22 +114,20 @@ test("square preview is consistent across all empty squares", async () => {
   const screen = await render(<Game />);
   const squares = screen.getByRole("button", { name: /empty|player/i });
 
-  const allSquaresHavePreview = Array.from({ length: 9 }, (_, i) => i).map((index) =>
-    expect.element(squares.nth(index)).toHaveAttribute("data-preview-next", "X"),
-  );
-  await Promise.all(allSquaresHavePreview);
+  const allHavePreview = squares
+    .all()
+    .map((square) => expect.element(square).toHaveAttribute("data-preview-next", "X"));
+  await Promise.all(allHavePreview);
 });
 
 test("squares are disabled after a win", async () => {
   const screen = await render(<Game />);
   const squares = screen.getByRole("button", { name: /empty|player/i });
-
   await squares.nth(0).click(); // X
   await squares.nth(3).click(); // O
   await squares.nth(1).click(); // X
   await squares.nth(4).click(); // O
   await squares.nth(2).click(); // X - Game Over
-
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
 
   const allDisabled = squares.all().map((square) => expect.element(square).toBeDisabled());
@@ -134,15 +135,15 @@ test("squares are disabled after a win", async () => {
 
   const emptySquare = squares.nth(5);
   await expect.element(emptySquare).toHaveTextContent("");
-
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
 });
 
 test("square is unclickable after filled", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
+  const firstSquare = squares.first();
 
-  await squares.nth(0).click(); // X
+  await firstSquare.click(); // X
 
-  await expect.element(squares.nth(0)).toBeDisabled();
+  await expect.element(firstSquare).toBeDisabled();
 });

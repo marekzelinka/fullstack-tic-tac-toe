@@ -4,7 +4,7 @@ import { render } from "vitest-browser-react";
 import type { Player } from "../lib/types.ts";
 import { GameBoard } from "./game-board.tsx";
 
-test("does not call onPlay event handler when clicked square is filled", async () => {
+test("does not call event handler when clicked square is filled", async () => {
   const onPlay = vi.fn();
   const screen = await render(
     <GameBoard
@@ -18,11 +18,10 @@ test("does not call onPlay event handler when clicked square is filled", async (
   const filledSquare = screen.getByRole("button", { name: /player x/i }).first();
 
   await expect.element(filledSquare).toBeDisabled();
-
   expect(onPlay).toHaveBeenCalledTimes(0);
 });
 
-test("does not call onPlay event handler when game is ower", async () => {
+test("does not call  event handler when game is over", async () => {
   const onPlay = vi.fn();
   const screen = await render(
     <GameBoard
@@ -36,6 +35,5 @@ test("does not call onPlay event handler when game is ower", async () => {
   const emptySquare = screen.getByRole("button", { name: /empty/i }).first();
 
   await expect.element(emptySquare).toBeDisabled();
-
   expect(onPlay).toHaveBeenCalledTimes(0);
 });
