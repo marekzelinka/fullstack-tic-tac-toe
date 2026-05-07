@@ -6,21 +6,18 @@ import { GameBoard } from "./game-board.tsx";
 
 test("does not call onPlay event handler when clicked square is filled", async () => {
   const onPlay = vi.fn();
-
   const screen = await render(
     <GameBoard
       isXNext={true}
-      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
-      squares={["X"].concat(Array(8).fill(null)) as Player[]}
+      squares={["X" as Player].concat(Array(8).fill(null))}
       winner={null}
       isGameOver={false}
       onPlay={onPlay}
     />,
   );
+  const filledSquare = screen.getByRole("button", { name: /player x/i }).first();
 
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
-
-  await expect(squares.nth(0).click()).rejects.toThrow();
+  await expect.element(filledSquare).toBeDisabled();
 
   expect(onPlay).toHaveBeenCalledTimes(0);
 });
@@ -36,10 +33,9 @@ test("does not call onPlay event handler when game is ower", async () => {
       onPlay={onPlay}
     />,
   );
+  const emptySquare = screen.getByRole("button", { name: /empty/i }).first();
 
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
-
-  await expect(squares.nth(2).click()).rejects.toThrow();
+  await expect.element(emptySquare).toBeDisabled();
 
   expect(onPlay).toHaveBeenCalledTimes(0);
 });

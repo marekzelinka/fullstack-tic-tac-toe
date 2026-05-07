@@ -21,7 +21,7 @@ export function Square({
       onClick={onClick}
       className="square"
       aria-label={player ? `Player ${player}` : "Empty"}
-      aria-disabled={player !== null || isGameOver ? true : undefined}
+      disabled={player !== null || isGameOver}
     >
       {player}
     </button>

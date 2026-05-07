@@ -74,7 +74,7 @@ function GameHistory({
   ));
 
   return (
-    <ol className="moves" aria-live="polite" aria-relevant="all">
+    <ol className="moves" aria-label="History" aria-live="polite" aria-relevant="all">
       {isAscending ? moves : moves.toReversed()}
     </ol>
   );

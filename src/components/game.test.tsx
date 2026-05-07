@@ -5,7 +5,7 @@ import { Game } from "./game.tsx";
 
 test("full game flow: X wins and resets", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   await expect.element(screen.getByText("Next player: X")).toBeVisible();
 
@@ -17,10 +17,10 @@ test("full game flow: X wins and resets", async () => {
   await squares.nth(8).click(); // X (X wins diagonal)
 
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
-  const winningIndicesAreHightlighted = [0, 4, 8].map((index) =>
-    expect.element(squares.nth(index)).toHaveAttribute("data-highlight", "true"),
-  );
-  await Promise.all(winningIndicesAreHightlighted);
+  for (const index of [0, 4, 8]) {
+    // oxlint-disable-next-line no-await-in-loop
+    await expect.element(squares.nth(index)).toHaveAttribute("data-highlight", "true");
+  }
 
   // Reset the game
   await screen.getByRole("button", { name: /play again/i }).click();
@@ -32,7 +32,7 @@ test("full game flow: X wins and resets", async () => {
 
 test("time travel: clicking history button updates the board", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   await squares.nth(0).click(); // Move 1 (X)
   await squares.nth(1).click(); // Move 2 (O)
@@ -46,7 +46,7 @@ test("time travel: clicking history button updates the board", async () => {
 
 test("game ends in a draw", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   for (const move of [0, 1, 2, 4, 3, 5, 7, 6, 8]) {
     // We cannot use Promise.all here because the game depends on the
@@ -62,20 +62,20 @@ test("game ends in a draw", async () => {
 
 test("history list can be sorted ascending and descending", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   await squares.nth(0).click();
   await squares.nth(1).click();
 
-  const historyItems = screen.getByRole("listitem");
+  const items = screen.getByRole("list", { name: /history/i }).getByRole("listitem");
 
-  await expect.element(historyItems.nth(0)).toHaveTextContent("Go to game start");
-  await expect.element(historyItems.nth(2)).toHaveTextContent("You are at move #2");
+  await expect.element(items.first()).toHaveTextContent("Go to game start");
+  await expect.element(items.last()).toHaveTextContent("You are at move #2");
 
   await screen.getByRole("button", { name: /sort moves descending/i }).click();
 
-  await expect.element(historyItems.nth(2)).toHaveTextContent("Go to game start");
-  await expect.element(historyItems.nth(0)).toHaveTextContent("You are at move #2");
+  await expect.element(items.last()).toHaveTextContent("Go to game start");
+  await expect.element(items.first()).toHaveTextContent("You are at move #2");
 });
 
 test("sorting button has correct accessibility attributes", async () => {
@@ -83,6 +83,7 @@ test("sorting button has correct accessibility attributes", async () => {
 
   const sortDescendingBtn = screen.getByRole("button", { name: /sort moves descending/i });
   await expect.element(sortDescendingBtn).toHaveAttribute("aria-pressed", "false");
+
   await sortDescendingBtn.click();
 
   const sortAscendingBtn = screen.getByRole("button", { name: /sort moves ascending/i });
@@ -91,7 +92,7 @@ test("sorting button has correct accessibility attributes", async () => {
 
 test("square preview updates correctly after each turn", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   // Initially the first square should preview "X"
   await expect.element(squares.nth(0)).toHaveAttribute("data-preview-next", "X");
@@ -108,7 +109,7 @@ test("square preview updates correctly after each turn", async () => {
 
 test("square preview is consistent across all empty squares", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   const allSquaresHavePreview = Array.from({ length: 9 }, (_, i) => i).map((index) =>
     expect.element(squares.nth(index)).toHaveAttribute("data-preview-next", "X"),
@@ -116,9 +117,9 @@ test("square preview is consistent across all empty squares", async () => {
   await Promise.all(allSquaresHavePreview);
 });
 
-test("squares are unclickable and disabled after a win", async () => {
+test("squares are disabled after a win", async () => {
   const screen = await render(<Game />);
-  const squares = screen.getByRole("region", { name: /board/i }).getByRole("button");
+  const squares = screen.getByRole("button", { name: /empty|player/i });
 
   await squares.nth(0).click(); // X
   await squares.nth(3).click(); // O
@@ -128,14 +129,12 @@ test("squares are unclickable and disabled after a win", async () => {
 
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
 
-  const allSquaresAreDisabled = Array.from({ length: 9 }, (_, i) => i).map((index) =>
-    expect.element(squares.nth(index)).toHaveAttribute("aria-disabled", "true"),
-  );
-  await Promise.all(allSquaresAreDisabled);
-  const emptySquare = squares.nth(5);
+  const allDisabled = squares.all().map((square) => expect.element(square).toBeDisabled());
+  await Promise.all(allDisabled);
 
-  await expect(emptySquare.click()).rejects.toThrow();
+  const emptySquare = squares.nth(5);
   await expect.element(emptySquare).toHaveTextContent("");
+
   await expect.element(screen.getByText("Winner: X")).toBeVisible();
 });
 
@@ -145,6 +144,5 @@ test("square is unclickable after filled", async () => {
 
   await squares.nth(0).click(); // X
 
-  await expect(squares.nth(0).click()).rejects.toThrow();
-  await expect.element(squares.nth(0)).toHaveAttribute("aria-disabled", "true");
+  await expect.element(squares.nth(0)).toBeDisabled();
 });

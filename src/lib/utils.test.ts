@@ -9,6 +9,16 @@ describe("calculateWinner", () => {
     expect(calculateWinner(squares)).toBeNull();
   });
 
+  test("returns null on a draw", () => {
+    const squares: Player[] = ["X", "O", "X", "X", "O", "O", "O", "X", "X"];
+    expect(calculateWinner(squares)).toBeNull();
+  });
+
+  test("returns null if there are 3 in a line but one is null", () => {
+    const squares: Player[] = [null, null, null, "X", "X", null, null, null, null];
+    expect(calculateWinner(squares)).toBeNull();
+  });
+
   test("identifies a winning row (top row)", () => {
     const squares: Player[] = ["X", "X", "X", "O", null, "O", null, null, null];
     expect(calculateWinner(squares)).toStrictEqual({
@@ -31,15 +41,5 @@ describe("calculateWinner", () => {
       player: "X",
       line: [0, 4, 8],
     });
-  });
-
-  test("returns null on a draw", () => {
-    const squares: Player[] = ["X", "O", "X", "X", "O", "O", "O", "X", "X"];
-    expect(calculateWinner(squares)).toBeNull();
-  });
-
-  test("returns null if there are 3 in a line but one is null", () => {
-    const squares: Player[] = [null, null, null, "X", "X", null, null, null, null];
-    expect(calculateWinner(squares)).toBeNull();
   });
 });
