@@ -21,13 +21,7 @@ export default defineConfig({
           include: ["src/**/*.test.tsx"],
           name: "browser",
           browser: {
-            provider: playwright({
-              launchOptions: {
-                // Use system chrome locally, but default playwright binary in CI
-                // TODO: Once playwright support ubuntu 26 lts we can remove this
-                channel: process.env.CI ? undefined : "chrome",
-              },
-            }),
+            provider: playwright(),
             enabled: true,
             headless: true,
             instances: [{ browser: "chromium" }],

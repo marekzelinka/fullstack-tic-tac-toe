@@ -17,8 +17,7 @@
     "react/no-array-index-key": "off",
     "jsx-a11y/alt-text": "warn",
     "jsx-a11y/anchor-has-content": "warn",
-    "typescript/no-explicit-any": "warn",
-    "no-unnecessary-type-arguments": "off"
+    "typescript/no-explicit-any": "warn"
   },
   "env": {
     "builtin": true,
